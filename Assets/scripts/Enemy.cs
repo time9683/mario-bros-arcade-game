@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     private bool isWeak = false;
+    private bool isDead = false;
     public float detectionRadius = 1f; // Radio de detección para el jugador
     public float flyAwayForce = 10f; // Fuerza para alejar al enemigo
 
@@ -19,23 +20,19 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+    
     }
 
     // Update is called once per frame
     void Update()
     {
        Animator animator = GetComponent<Animator>();
-        if (isWeak)
-        {
-            animator.SetBool("IsWeak", true);
-        }
-        else
-        {
-            animator.SetBool("IsWeak", false);
-        }
+       animator.SetBool("IsWeak", isWeak);
+       animator.SetBool("IsDead", isDead);
 
-        DetectPlayerAndReact();
+
+
+
         Move();
         CheckScreenEdge();
         
@@ -66,48 +63,65 @@ public class Enemy : MonoBehaviour
 
 
 
-        private void DetectPlayerAndReact()
-    {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
-        foreach (var hitCollider in hitColliders)
-        {
-            if (hitCollider.gameObject.tag == "Player")
-            {
-                if (isWeak)
-                {
-                    // Aplicar fuerza para que el enemigo salga volando
+
+    private void OnCollisionEnter2D(Collision2D collision){
+
+        if (collision.gameObject.tag == "Player"){
+
+            Player player = collision.gameObject.GetComponent<Player>();
+
+            if (player != null){
+
+                if (!isWeak){
+                    // direction a la que se podrocera el knockback
+                    Vector2 direction = (player.transform.position - transform.position).normalized;
+                    player.TakeDamage(direction);
+                }else{
+
                     Rigidbody2D rb = GetComponent<Rigidbody2D>();
                     if (rb != null)
                     {
-                        Vector2 flyDirection = (transform.position - hitCollider.transform.position).normalized;
+                        Vector2 flyDirection = (transform.position - player.transform.position).normalized;
                         rb.AddForce(flyDirection * flyAwayForce, ForceMode2D.Impulse);
                     }
 
-                    // Desaparecer el enemigo después de un corto tiempo
-                    // StartCoroutine(DisappearAfterDelay());
+                    isDead = true;
+                    StartCoroutine(DisappearAfterDelay());
+
                 }
-                else{
-                    // Hacer daño al jugador
-                    Player player = hitCollider.GetComponent<Player>();
-                    if (player != null) {
-                        player.TakeDamage(1);
-                    }
-                }
+
+
+
+            }
+      }else  if (collision.gameObject.tag == "enemy")
+        {
+            flipDirection();
+        }
+    }
+
+
+    // cuando el jugador sale de la colision llamar stop damage
+    private void OnCollisionExit2D(Collision2D collision){
+        if (collision.gameObject.tag == "Player"){
+            Player player = collision.gameObject.GetComponent<Player>();
+            if (player != null){
+                player.StopDamage();
             }
         }
     }
 
 
-    // private IEnumerator DisappearAfterDelay()
-    // {
-    //     yield return new WaitForSeconds(1f); // Esperar 1 segundo
-    //     Destroy(gameObject); // Destruir el enemigo
-    // }
+
+    private IEnumerator DisappearAfterDelay()
+    {
+        yield return new WaitForSeconds(1f); // Esperar 1 segundo
+        Destroy(gameObject); // Destruir el enemigo
+    }
 
 
     private void Move(){
         // mover al enemigo hasta la direcion actual
-        if (!isWeak){
+        if (!isWeak && !isDead){
         transform.position += new Vector3((int)currentDirection * velocity * Time.deltaTime, 0, 0);
        
         // segun el movimientoc cambiar la direccion del sprite
@@ -135,9 +149,10 @@ public class Enemy : MonoBehaviour
     }
 
 
-    private void flipDirection(){
+    public void flipDirection(){
         currentDirection = currentDirection == Direction.Left ? Direction.Right : Direction.Left;
     }
+
 
 
 

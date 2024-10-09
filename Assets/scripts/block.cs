@@ -6,7 +6,7 @@ public class block : MonoBehaviour
 {
 
     // radio de detección de enemigos
-    public float detectionRadius = 1.5f;
+    public float detectionRadius = 2f;
     public bool isMoving = false;
     private Vector2 initialPosition;
 
@@ -73,7 +73,17 @@ IEnumerator MoveBlock(Vector2 contactPoint)
         }
         isMoving = false;
     }
+
+    // dibujar el radio de detección de enemigos
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+    }
+
 } 
+
+
 
 
 

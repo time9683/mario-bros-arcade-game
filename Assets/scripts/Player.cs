@@ -34,21 +34,57 @@ public class Player : MonoBehaviour
 
      Rigidbody2D rb2d;
      private bool isDead = false;
+     private bool isHurt = false;
+     private int life = 3;
+
 
     private void Awake(){
         rb2d = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
+
+          if (rb2d == null)
+        {
+            Debug.LogError("Rigidbody2D no está asignado.");
+        }
+
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource no está asignado.");
+        }
+
+        if (animator == null)
+        {
+            Debug.LogError("Animator no está asignado.");
+        }
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
 
         AudioClips = new Dictionary<string, AudioClip>(){
             {"Hurt", HurtSound},
             {"Jump", jumpSound}
         };
+
+        if(GameManager.instance != null){
+        GameManager.instance.updateLifeUI(life);
+        }
+
+         if (HurtSound == null)
+        {
+            Debug.LogError("HurtSound no está asignado.");
+        }
+
+        if (jumpSound == null)
+        {
+            Debug.LogError("jumpSound no está asignado.");
+        }
     }
+
+    
+
 
     // Update is called once per frame
     void Update()
@@ -114,16 +150,32 @@ public class Player : MonoBehaviour
 
 
 
+    public void TakeDamage(Vector2 direction){
+        if (!isHurt && !isDead){
+            isHurt = true;
+            PlaySound("Hurt");
+            life -= 1;
+            GameManager.instance.updateLifeUI(life);
+            rb2d.AddForce(Vector2.up * 0.5f, ForceMode2D.Impulse); 
 
-    public void TakeDamage(int damage)
-    {
-       
-        PlaySound("Hurt");
-            // Implementar lógica de muerte del jugador
-            // isDead = true;
-        // empujar al jugador hacia la dirección opuesta
-        rb2d.AddForce(Vector2.up * 0.5f, ForceMode2D.Impulse); 
+            if(life <= 0){
+                isDead = true;
+            }
+
+
+
+        }
+
     }
+
+
+    public void StopDamage(){
+        isHurt = false;
+        rb2d.velocity = Vector2.zero;
+    }
+
+
+
 
 
     private void PlaySound(string soundName){
