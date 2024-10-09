@@ -340,6 +340,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: green-hill-zone_11
+      rect:
+        serializedVersion: 2
+        x: 711
+        y: 271
+        width: 545
+        height: 332
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e389625cada1943fca2c559de8d7bb12
+      internalID: 1624634222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -354,6 +375,7 @@ TextureImporter:
       green-hill-zone_0: 262475572
       green-hill-zone_1: -667354577
       green-hill-zone_10: 766210214
+      green-hill-zone_11: 1624634222
       green-hill-zone_2: -595412010
       green-hill-zone_3: 1325399479
       green-hill-zone_4: -446754329
