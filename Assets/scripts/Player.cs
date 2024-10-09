@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class move : MonoBehaviour
+public class Player : MonoBehaviour
 {
-    enum Direction{
+    // Start is called before the first frame update
+  enum Direction{
         Left = -1,
         None=0,
         Right = 1
@@ -17,9 +18,22 @@ public class move : MonoBehaviour
     public  float heightRaycast = 0.1f;
     private bool isGrounded;
     public Animator animator;
+
+    
+    private Dictionary<string, AudioClip> AudioClips;
+    
+    
+    private AudioSource audioSource;
+
+    public AudioClip HurtSound;
     public AudioClip jumpSound;
 
+
+
+
+
      Rigidbody2D rb2d;
+     private bool isDead = false;
 
     private void Awake(){
         rb2d = GetComponent<Rigidbody2D>();
@@ -28,15 +42,20 @@ public class move : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
 
-        
+        AudioClips = new Dictionary<string, AudioClip>(){
+            {"Hurt", HurtSound},
+            {"Jump", jumpSound}
+        };
     }
 
     // Update is called once per frame
     void Update()
     {
         currentDirection = Direction.None;
+
+      if(!isDead){
         if(Input.GetKeyDown(KeyCode.Space) && isGrounded){
             Jump();
         }
@@ -50,12 +69,13 @@ public class move : MonoBehaviour
         {
             currentDirection = Direction.Right;
         }
-        
+      }
     }
 
     private void FixedUpdate(){
         Vector2 velocity = new Vector2((float)currentDirection * speed,rb2d.velocity.y);
         animator.SetFloat("movement", velocity.x);
+        animator.SetBool("isDeath", isDead);
         rb2d.velocity =  velocity;
         if(velocity.x < 0.0){
             
@@ -78,7 +98,7 @@ public class move : MonoBehaviour
     }
 
     void Jump(){
-        AudioSource.PlayClipAtPoint(jumpSound, transform.position);
+        PlaySound("Jump");
         Vector2 jumpVelocity = new Vector2(0, jumpForce);
         rb2d.AddForce(jumpVelocity, ForceMode2D.Impulse);
     }
@@ -87,4 +107,33 @@ public class move : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, transform.position + Vector3.down * heightRaycast);
     }
+
+
+
+
+    public void TakeDamage(int damage)
+    {
+       
+        PlaySound("Hurt");
+            // Implementar lógica de muerte del jugador
+            // isDead = true;
+        // empujar al jugador hacia la dirección opuesta
+        rb2d.AddForce(Vector2.up * 0.5f, ForceMode2D.Impulse); 
+    }
+
+
+    private void PlaySound(string soundName){
+
+
+        if(AudioClips.ContainsKey(soundName)){
+            audioSource.clip = AudioClips[soundName];
+            audioSource.Play();
+        }
+
+
+
+    }
+
+
+
 }

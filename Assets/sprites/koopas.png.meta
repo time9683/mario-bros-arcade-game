@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ac6411f9120f3497f8c43856cdc20e19
+guid: 6d07a972191de394a8715334be9b35cd
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,8 +48,8 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 56
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 60, z: 144, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -110,13 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sonic_death_0
+      name: koopas_0
       rect:
         serializedVersion: 2
-        x: 154
-        y: 170
-        width: 39
-        height: 44
+        x: 0
+        y: 0
+        width: 220
+        height: 115
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,29 +124,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ac812689812434167894b07789bad103
-      internalID: 1966613513
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sonic_death_1
-      rect:
-        serializedVersion: 2
-        x: 79
-        y: 173
-        width: 42
-        height: 41
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9e1e7ade85e074237bb74a5906530f1c
-      internalID: -707644058
+      spriteID: edde9414bef447c8dae5bd4e57b8c595
+      internalID: 336094945
       vertices: []
       indices: 
       edges: []
@@ -155,15 +134,14 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      sonic_death_0: 1966613513
-      sonic_death_1: -707644058
+      koopas_0: 336094945
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
