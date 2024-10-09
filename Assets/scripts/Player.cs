@@ -70,6 +70,7 @@ public class Player : MonoBehaviour
             currentDirection = Direction.Right;
         }
       }
+
     }
 
     private void FixedUpdate(){
@@ -94,6 +95,9 @@ public class Player : MonoBehaviour
        }else if(isGrounded){ 
             animator.SetBool("isground", isGrounded);
        }
+
+
+         CheckScreenEdge();
 
     }
 
@@ -132,6 +136,25 @@ public class Player : MonoBehaviour
 
 
 
+    }
+
+
+     private void CheckScreenEdge()
+    {
+
+        float screenEdgeX = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).x;
+
+
+        if (transform.position.x > screenEdgeX)
+        {
+            // Transportar al jugador al lado izquierdo de la pantalla
+            transform.position = new Vector3(-screenEdgeX, transform.position.y, transform.position.z);
+        }
+        else if (transform.position.x < -screenEdgeX)
+        {
+            // Transportar al jugador al lado derecho de la pantalla
+            transform.position = new Vector3(screenEdgeX, transform.position.y, transform.position.z);
+        }
     }
 
 
