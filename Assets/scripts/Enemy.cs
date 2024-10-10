@@ -84,8 +84,10 @@ public class Enemy : MonoBehaviour
                         Vector2 flyDirection = (transform.position - player.transform.position).normalized;
                         rb.AddForce(flyDirection * flyAwayForce, ForceMode2D.Impulse);
                     }
-
+                    
                     isDead = true;
+                    // desactivar el collider
+                    GetComponent<Collider2D>().enabled = false;
                     StartCoroutine(DisappearAfterDelay());
 
                 }
@@ -116,6 +118,8 @@ public class Enemy : MonoBehaviour
     {
         yield return new WaitForSeconds(1f); // Esperar 1 segundo
         Destroy(gameObject); // Destruir el enemigo
+        // call game manager to check enemies
+        GameManager.instance.CheckEnemies();
     }
 
 

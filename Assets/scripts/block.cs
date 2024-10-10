@@ -30,6 +30,21 @@ public class block : MonoBehaviour
         if (collision.gameObject.tag == "Player" && collision.contacts[0].normal.y > 0 && !isMoving)
         {
             
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, detectionRadius);
+        foreach (var hitCollider in hitColliders)
+        {
+            if (hitCollider.gameObject.tag == "enemy")
+            {
+                // Cambiar el estado del enemigo a "débil"
+                Enemy enemy = hitCollider.GetComponent<Enemy>();
+                if (enemy != null)
+                {
+                    enemy.ChangeStateToWeak();
+                }
+            }
+        }
+
+
             StartCoroutine(MoveBlock(collision.contacts[0].point));
 
 
@@ -51,19 +66,6 @@ IEnumerator MoveBlock(Vector2 contactPoint)
         }
 
         // Detectar enemigos cercanos y cambiar su estado a "débil"
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(newPos, detectionRadius);
-        foreach (var hitCollider in hitColliders)
-        {
-            if (hitCollider.gameObject.tag == "enemy")
-            {
-                // Cambiar el estado del enemigo a "débil"
-                Enemy enemy = hitCollider.GetComponent<Enemy>();
-                if (enemy != null)
-                {
-                    enemy.ChangeStateToWeak();
-                }
-            }
-        }
 
         // Retornar el bloque a la posición original
         while (Vector2.Distance(transform.position, initialPosition) > 0.01f)

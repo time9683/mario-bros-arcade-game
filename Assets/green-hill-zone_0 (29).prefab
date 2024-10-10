@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49d3e90344e3068afb5c9bd7ad044df7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 0.4
+  detectionRadius: 0.3
   isMoving: 0
 --- !u!61 &6739696716727607495
 BoxCollider2D:

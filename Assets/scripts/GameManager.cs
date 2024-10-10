@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public int rings = 0;
     public TMPro.TextMeshProUGUI ringsText;
     public TMPro.TextMeshProUGUI lifeText;
+    public TMPro.TextMeshProUGUI winLooseText;
 
 
     void Awake(){
@@ -41,6 +42,14 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("lifeText no está asignado en el inspector.");
         }
+
+        if (winLooseText == null)
+        {
+            Debug.LogError("winLooseText no está asignado en el inspector.");
+        }
+
+    
+
     
     }
 
@@ -70,6 +79,23 @@ public class GameManager : MonoBehaviour
             lifeText.text = life.ToString();
         }
     }
+
+
+    public void CheckEnemies(){
+        StartCoroutine(CheckEnemiesC());
+    }
+
+    private IEnumerator CheckEnemiesC(){
+        
+        yield return new WaitForSeconds(1f);
+
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemy");
+        if (enemies.Length == 0){
+            winLooseText.text = "You Win!";
+        }
+
+    }
+
 
 
 }
