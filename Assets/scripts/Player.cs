@@ -11,7 +11,10 @@ public class Player : MonoBehaviour
         Right = 1
     }
     Direction currentDirection = Direction.None;
+    public float MaxSpeed = 5f;
     public float speed;
+    public float acceleration = 0.05f;
+
     public float jumpForce = 5f;
 
     public LayerMask groundLayer;
@@ -69,6 +72,7 @@ public class Player : MonoBehaviour
         };
 
         if(GameManager.instance != null){
+        
         GameManager.instance.updateLifeUI(life);
         }
 
@@ -110,6 +114,22 @@ public class Player : MonoBehaviour
     }
 
     private void FixedUpdate(){
+
+        if(currentDirection != Direction.None){
+            speed += acceleration;
+            speed = Mathf.Clamp(speed, 0, MaxSpeed);
+        }else{
+            speed = 1;
+        }
+
+
+
+
+
+
+
+
+
         Vector2 velocity = new Vector2((float)currentDirection * speed,rb2d.velocity.y);
         animator.SetFloat("movement", velocity.x);
         animator.SetBool("isDeath", isDead);

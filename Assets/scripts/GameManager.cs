@@ -6,11 +6,14 @@ public class GameManager : MonoBehaviour
 {
     // create a varible for instance
     public static GameManager instance;
+    private static int MAXPoints = 0;
+
 
     public int rings = 0;
     public TMPro.TextMeshProUGUI ringsText;
     public TMPro.TextMeshProUGUI lifeText;
     public TMPro.TextMeshProUGUI winLooseText;
+    public TMPro.TextMeshProUGUI MAXPoinsText;
 
 
     void Awake(){
@@ -49,8 +52,9 @@ public class GameManager : MonoBehaviour
         }
 
     
-
-    
+        if (MAXPoinsText == null){
+            Debug.LogError("MAXPoinsText no está asignado en el inspector.");
+        }
     }
 
     // Update is called once per frame
@@ -61,6 +65,11 @@ public class GameManager : MonoBehaviour
 
     public void addRing(){
         rings++;
+        // update MAXPoints
+        if (rings > MAXPoints){
+            MAXPoints = rings;
+            MAXPoinsText.text =  "MAX "  + MAXPoints.ToString();
+        }
         UpdateRingUI();
     }
 
@@ -92,13 +101,42 @@ public class GameManager : MonoBehaviour
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemy");
         if (enemies.Length == 0){
             winLooseText.text = "You Win!";
+            StartCoroutine(RestartLevel());
         }
 
     }
 
     public void GameOver(){
         winLooseText.text = "Game Over!";
+        StartCoroutine(RestartLevel());
     }
+
+
+
+
+    private IEnumerator RestartLevel(){
+
+        yield return new WaitForSeconds(2f);
+
+        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    
+        // reset the rings
+        rings = 0;
+        UpdateRingUI();
+        // obtener el elemento canvas con la etiqueta "UI"
+        GameObject canvas = GameObject.FindWithTag("UI");
+        // obtener camara principal
+        Camera camera = Camera.main;
+        // asignar renderer camara al canvas
+        canvas.GetComponent<Canvas>().worldCamera = camera;
+        // vaciar texto 
+        winLooseText.text = "";
+
+
+
+    }
+
+ 
 
 
 }
