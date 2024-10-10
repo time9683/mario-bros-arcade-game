@@ -194,4 +194,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   detectionRadius: 0.5
-  flyAwayForce: 3
+  flyAwayForce: 10

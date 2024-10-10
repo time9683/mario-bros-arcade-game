@@ -160,6 +160,9 @@ public class Player : MonoBehaviour
 
             if(life <= 0){
                 isDead = true;
+                GameManager.instance.GameOver();
+                // desactivar el collider
+                GetComponent<Collider2D>().enabled = false;
             }
 
 
