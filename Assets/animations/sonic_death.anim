@@ -75,4 +75,11 @@ AnimationClip:
   m_EulerEditorCurves: []
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.41666666
+    functionName: fallPlayer
+    data: 
+    objectReferenceParameter: {fileID: 326146885366721548, guid: 1184ae9e7ac0568488d8d26614282d79, type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
