@@ -123,13 +123,6 @@ public class Player : MonoBehaviour
         }
 
 
-
-
-
-
-
-
-
         Vector2 velocity = new Vector2((float)currentDirection * speed,rb2d.velocity.y);
         animator.SetFloat("movement", velocity.x);
         animator.SetBool("isDeath", isDead);
@@ -176,16 +169,10 @@ public class Player : MonoBehaviour
             PlaySound("Hurt");
             life -= 1;
             GameManager.instance.updateLifeUI(life);
-            rb2d.AddForce(Vector2.up * 0.5f, ForceMode2D.Impulse); 
-
-            if(life <= 0){
-                isDead = true;
-                GameManager.instance.GameOver();
-                // desactivar el collider
-                GetComponent<Collider2D>().enabled = false;
-            }
-
-
+            rb2d.AddForce(Vector2.up * 7f, ForceMode2D.Impulse);
+            // desactivar el collider del jugador directamnete
+            isDead = true; 
+            GetComponent<Collider2D>().enabled = false;
 
         }
 
@@ -232,6 +219,39 @@ public class Player : MonoBehaviour
         }
     }
 
+    // create a coroutine to respawn the player
 
+    public void fallPlayer(){
+            if(life <= 0){
+                GameManager.instance.GameOver();
+                // desactivar el collider
+                // GetComponent<Collider2D>().enabled = false;
+                return;
+            }   
+
+            StartCoroutine(RewSpawn());
+
+
+    }
+
+
+
+
+
+
+    private IEnumerator RewSpawn(){
+        yield return new WaitForSeconds(2f);
+        isDead = false;
+        // only RewSpawn if remaining life
+        if(life > 0){
+            // obtener el elemento con la etiqueta "Respawn"
+            GameObject respawn = GameObject.FindWithTag("Respawn");
+            // mover al jugador a la posición del objeto "Respawn"
+            transform.position = respawn.transform.position;
+            // activar el collider
+            GetComponent<Collider2D>().enabled = true;
+        }
+
+    }
 
 }
