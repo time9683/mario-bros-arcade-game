@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
         // update MAXPoints
         if (rings > MAXPoints){
             MAXPoints = rings;
-            MAXPoinsText.text =  "MAX "  + MAXPoints.ToString();
+            MAXPoinsText.text = MAXPoints.ToString();
         }
         UpdateRingUI();
     }
