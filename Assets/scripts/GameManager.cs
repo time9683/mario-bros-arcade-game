@@ -12,8 +12,16 @@ public class GameManager : MonoBehaviour
     public int rings = 0;
     public TMPro.TextMeshProUGUI ringsText;
     public TMPro.TextMeshProUGUI lifeText;
-    public TMPro.TextMeshProUGUI winLooseText;
     public TMPro.TextMeshProUGUI MAXPoinsText;
+
+    // audioclip win
+    public AudioClip winSound;
+    // audioclip loose
+    public AudioClip looseSound;
+    // image win
+    public GameObject winImage;
+    // image loose
+    public GameObject looseImage;
 
 
     void Awake(){
@@ -46,15 +54,15 @@ public class GameManager : MonoBehaviour
             Debug.LogError("lifeText no está asignado en el inspector.");
         }
 
-        if (winLooseText == null)
-        {
-            Debug.LogError("winLooseText no está asignado en el inspector.");
-        }
-
     
         if (MAXPoinsText == null){
             Debug.LogError("MAXPoinsText no está asignado en el inspector.");
         }
+
+        // desactivar win and loose image
+        winImage.SetActive(false);
+        looseImage.SetActive(false);
+
     }
 
     // Update is called once per frame
@@ -96,18 +104,34 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator CheckEnemiesC(){
         
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemy");
         if (enemies.Length == 0){
-            winLooseText.text = "You Win!";
+            if (winSound != null){
+                PlaySound(winSound);
+                // show win image
+                winImage.SetActive(true);
+                // force to show the image
+                winImage.GetComponent<SpriteRenderer>().enabled = true;
+
+            }
+            
             StartCoroutine(RestartLevel());
         }
 
     }
 
     public void GameOver(){
-        winLooseText.text = "Game Over!";
+        if (looseSound != null){
+            PlaySound(looseSound);
+            looseImage.SetActive(true);
+            
+            
+        }
+
+
+
         StartCoroutine(RestartLevel());
     }
 
@@ -116,7 +140,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RestartLevel(){
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
     
@@ -130,13 +154,24 @@ public class GameManager : MonoBehaviour
         // asignar renderer camara al canvas
         canvas.GetComponent<Canvas>().worldCamera = camera;
         // vaciar texto 
-        winLooseText.text = "";
-
+        // desactive spriteRendere image loose
+        looseImage.SetActive(false);
+        // desactive spriteRendere image win
+        winImage.SetActive(false);
 
 
     }
 
  
 
+    private void PlaySound(AudioClip sound){
+        if (sound != null){
+            // get the audio source
+            AudioSource audioSource = GetComponent<AudioSource>();
+            audioSource.clip = sound;
+            audioSource.Play();
+        }
+
+    }
 
 }

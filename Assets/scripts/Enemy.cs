@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
     private bool isDead = false;
     public float detectionRadius = 1f; // Radio de detección para el jugador
     public float flyAwayForce = 10f; // Fuerza para alejar al enemigo
+    // clipsound
+    public AudioClip DeadSound;
 
     enum Direction{
         Left = -1,
@@ -86,6 +88,12 @@ public class Enemy : MonoBehaviour
                     }
                     
                     isDead = true;
+                    // reproducir el sonido de muerte
+                    // get the audio source
+                    AudioSource audioSource = GetComponent<AudioSource>();
+                    audioSource.clip = DeadSound;
+                    audioSource.Play();
+                    Debug.Log("Dead");
                     // desactivar el collider
                     GetComponent<Collider2D>().enabled = false;
                     StartCoroutine(DisappearAfterDelay());
