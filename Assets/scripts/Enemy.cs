@@ -85,6 +85,10 @@ public class Enemy : MonoBehaviour
                     if (rb != null)
                     {
                         Vector2 flyDirection = (transform.position - player.transform.position).normalized;
+                       
+                       
+                        // instaciar el anillo en la posicion del enemigo
+                        Instantiate(ringPrefab, transform.position, Quaternion.identity);
                         rb.AddForce(flyDirection * flyAwayForce, ForceMode2D.Impulse);
                     }
                     
