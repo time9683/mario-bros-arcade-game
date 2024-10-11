@@ -153,7 +153,7 @@ public class Enemy : MonoBehaviour
         if((int)currentDirection < 0){
             transform.localScale = new Vector3(1, 1, 1);
         }else{
-            transform.localScale = new Vector3(1, 1, 1);
+            transform.localScale = new Vector3(-1, 1, 1);
         }
        
         }
