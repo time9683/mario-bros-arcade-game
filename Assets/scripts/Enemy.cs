@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
 
     Direction currentDirection = Direction.Left;
     private float velocity = 2f;
+    public GameObject ringPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -128,6 +129,18 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject); // Destruir el enemigo
         // call game manager to check enemies
         GameManager.instance.CheckEnemies();
+
+        
+        // instanciar el anillo
+        // get gameObject by tag enemySpawn
+        GameObject enemySpawn = GameObject.FindGameObjectWithTag("enemySpawn");
+        // log for debug
+        Debug.Log(enemySpawn.transform.position);
+        // 
+        // colocar el anillo en la posicion del spawn
+        Instantiate(ringPrefab, enemySpawn.transform.position, Quaternion.identity);
+        // log for debug
+        Debug.Log("Ring");
     }
 
 
@@ -140,7 +153,7 @@ public class Enemy : MonoBehaviour
         if((int)currentDirection < 0){
             transform.localScale = new Vector3(1, 1, 1);
         }else{
-            transform.localScale = new Vector3(-1, 1, 1);
+            transform.localScale = new Vector3(1, 1, 1);
         }
        
         }
