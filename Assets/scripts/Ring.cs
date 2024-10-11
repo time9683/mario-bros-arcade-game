@@ -35,14 +35,8 @@ public class Ring : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            // desactivar el collider
-            GetComponent<Collider2D>().enabled = false;
-            // add ring
-            GameManager.instance.addRing();
-            // make sprite invisible
-            GetComponent<SpriteRenderer>().enabled = false;
-            audioSource.Play();
-            Destroy(gameObject, audioSource.clip.length);
+            getRing();
+           
         }
     }
 
@@ -73,4 +67,21 @@ public class Ring : MonoBehaviour
             transform.position = new Vector3(-screenEdgeX, 2.69f, 0);
         }
     }
+
+    public void getRing(){
+         // desactivar el collider
+            GetComponent<Collider2D>().enabled = false;
+            // add ring
+            GameManager.instance.addRing();
+            // make sprite invisible
+            GetComponent<SpriteRenderer>().enabled = false;
+            audioSource.Play();
+            Destroy(gameObject, audioSource.clip.length);
+    }
+
+
+
+
 }
+
+

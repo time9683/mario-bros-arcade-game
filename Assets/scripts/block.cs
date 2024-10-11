@@ -42,6 +42,19 @@ public class block : MonoBehaviour
                     enemy.ChangeStateToWeak();
                 }
             }
+
+            if (hitCollider.gameObject.tag == "ring"){
+
+                Ring ring = hitCollider.GetComponent<Ring>();
+                if (ring != null)
+                {
+                    ring.getRing();
+                }
+
+            }
+
+
+
         }
 
 
