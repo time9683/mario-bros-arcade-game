@@ -41,6 +41,11 @@ public class Player : MonoBehaviour
      private int life = 3;
 
 
+     public GameObject blockPrefab;
+     private GameObject currentBlock;
+    
+
+
     private void Awake(){
         rb2d = GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
@@ -109,11 +114,24 @@ public class Player : MonoBehaviour
         {
             currentDirection = Direction.Right;
         }
+
       }
 
     }
 
     private void FixedUpdate(){
+
+
+        // based on the direction if the player move,destroys the block
+        if (currentDirection != Direction.None && currentBlock != null){
+            DestroyBlock();
+        }
+
+
+
+
+
+
 
         if(currentDirection != Direction.None){
             speed += acceleration;
@@ -240,18 +258,48 @@ public class Player : MonoBehaviour
 
 
     private IEnumerator RewSpawn(){
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         isDead = false;
         // only RewSpawn if remaining life
         if(life > 0){
             // obtener el elemento con la etiqueta "Respawn"
             GameObject respawn = GameObject.FindWithTag("Respawn");
-            // mover al jugador a la posición del objeto "Respawn"
             transform.position = respawn.transform.position;
             // activar el collider
+                    if (blockPrefab != null)
+        {
+            Vector2 blockPosition = new Vector2(transform.position.x, transform.position.y - 1);
+            currentBlock = Instantiate(blockPrefab, blockPosition, Quaternion.identity);
+        }
+
+        // bajar el bloque
             GetComponent<Collider2D>().enabled = true;
+            StartCoroutine(LowerBlock(currentBlock));
+
+
         }
 
     }
 
+    private void DestroyBlock(){
+        if(currentBlock != null){
+            Destroy(currentBlock);
+            currentBlock = null;
+        }
+    }
+
+    private IEnumerator LowerBlock(GameObject block)
+    {
+        float duration = 0.25f; // Duración de la animación en segundos (más rápido)
+        float elapsed = 0f;
+        Vector3 originalPosition = block.transform.position;
+        Vector3 targetPosition = originalPosition + Vector3.down * 0.5f; // Mover el bloque hacia abajo menos
+
+        while (elapsed < duration)
+        {
+            block.transform.position = Vector3.Lerp(originalPosition, targetPosition, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+    }
 }
