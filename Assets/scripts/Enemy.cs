@@ -108,10 +108,11 @@ public class Enemy : MonoBehaviour
 
 
             }
-      }else  if (collision.gameObject.tag == "enemy")
-        {
+      }else  if (collision.gameObject.tag == "enemy" || collision.gameObject.tag == "ring"){
+        
             flipDirection();
-        }
+        
+      }
     }
 
 
