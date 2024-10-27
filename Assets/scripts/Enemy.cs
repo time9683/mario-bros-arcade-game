@@ -166,15 +166,31 @@ public class Enemy : MonoBehaviour
 
 
     // si el enemigo llega al borde de la pantalla, cambiar la dirección y transportar la direcion y a 2.69y, y la x contraria
+    // solo debe transportar arriba si es la parte mas baja entre  -1.26 y  -2.59 si no solo se transporta al lado contrario
     private void CheckScreenEdge(){
         float screenEdgeX = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).x;
         
         if(transform.position.x > screenEdgeX){
-            currentDirection = Direction.Left;
-            transform.position = new Vector3(screenEdgeX, 2.69f, 0);
+
+            if (transform.position.y < -1.26f && transform.position.y > -2.59f){
+                currentDirection = Direction.Left;
+                transform.position = new Vector3(screenEdgeX, 2.69f, 0);
+            }else{
+                // transportar al enemigo al lado izquierdo de la pantalla
+                transform.position = new Vector3(-screenEdgeX, transform.position.y, transform.position.z);
+            }
+
+
+
         }else if(transform.position.x < -screenEdgeX){
-            currentDirection = Direction.Right;
-            transform.position = new Vector3(-screenEdgeX, 2.69f, 0);
+
+            if (transform.position.y < -1.26f && transform.position.y > -2.59f){
+                currentDirection = Direction.Right;
+                transform.position = new Vector3(-screenEdgeX, 2.69f, 0);
+            }else{
+                // transportar al enemigo al lado derecho de la pantalla
+                transform.position = new Vector3(screenEdgeX, transform.position.y, transform.position.z);
+            }
         }
     }
 
